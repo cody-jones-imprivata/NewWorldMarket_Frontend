@@ -24,6 +24,7 @@ export const Login = () => {
       .then((res) => res.json())
       .then((res) => {
         if ("valid" in res && res.valid && "token" in res) {
+          localStorage.setItem("user", res.user.id);
           localStorage.setItem("newworld_token", res.token);
         history.push("/");
         } else {
