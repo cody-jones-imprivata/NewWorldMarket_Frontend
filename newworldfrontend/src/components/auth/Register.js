@@ -1,75 +1,80 @@
-import React, { useRef } from "react";
-import {useHistory } from "react-router-dom";
+import React, { useRef,useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useContext } from "react";
 import { FactionContext } from "../Servers,Factions,Settlements/FactionProvider";
 import { ServerContext } from "../Servers,Factions,Settlements/ServerProvider";
 import { useEffect } from "react";
+import { Dropdown,Option } from "../dropdown/DropDown";
+
 
 export const Register = () => {
+  const [optionValueFaction, setOptionValueFaction] = useState("");
+  const [optionValueServer, setOptionValueServer] = useState("");
   const { Factions, getFactions } = useContext(FactionContext)
   const { Servers, getServers } = useContext(ServerContext)
   const email = useRef();
   const username = useRef();
   const password = useRef();
   const inGamename = useRef();
-  const Server = useRef();
   const discord = useRef();
-  const Faction = useRef();
-  const passwordDialog = useRef();
   const history = useHistory();
 
+
+  const handleSelectFactions = (e) => {
+    console.log(`Faction`,e.target.value);
+    setOptionValueFaction(e.target.value);
+  };
+  const handleSelectServers= (e) => {
+    console.log(`Server`,e.target.value);
+    setOptionValueServer(e.target.value);
+  }; 
+  
+
+
+    
   useEffect(() => {
     getFactions()
     getServers()
-}, []);
-  const handleRegister = (e) => {
-    e.preventDefault();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const handleRegister = (event) => {
+
+    event.preventDefault();
+
+    const new_user = {
+      username: username.current.value,
+      first_name: "",
+      last_name: "",
+      email: email.current.value,
+      password: password.current.value,
+      inGamename: inGamename.current.value,
+      discord: discord.current.value,
+      server: parseInt(optionValueServer),
+      faction: parseInt(optionValueFaction)
+    };
+
+    return fetch("http://127.0.0.1:8000/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(new_user),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if ("token" in res) {
+          localStorage.setItem("newworld_token", res.token);
+          history.push("/");
+        }
+      });
+  }
 
 
-    if (password.current.value === password.current.value) {
-      const new_user = {
-        username: username.current.value,
-        first_name: "",
-        last_name: "",
-        email: email.current.value,
-        password: password.current.value,
-        inGamename: inGamename.current.value,
-        discord: discord.current.value,
-        faction: parseInt(Faction.current.value),
-        server: parseInt(Server.current.value)
-      };
-
-      return fetch("http://127.0.0.1:8000/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify(new_user),
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if ("token" in res) {
-            localStorage.setItem("newworld_token", res.token);
-            history.push("/");
-          }
-        });
-    } else {
-      passwordDialog.current.showModal();
-    }
-  };
 
   return (
     <main style={{ textAlign: "center" }}>
-      <dialog className="dialog dialog--password" ref={passwordDialog}>
-        <div>Passwords do not match</div>
-        <button
-          className="button--close"
-          onClick={(e) => passwordDialog.current.close()}
-        >
-          Close
-        </button>
-      </dialog>
 
       <form className="form--login" onSubmit={handleRegister}>
         <h1 className="h3 mb-3 font-weight-normal">Register an account</h1>
@@ -120,18 +125,20 @@ export const Register = () => {
         </fieldset>
 
         <form action="/">
-                <label htmlFor="Factions">Choose a Faction:</label>
-                <select id="faction" name="faction">
-                    {Factions.map(faction => { return (<option id="faction" value={faction.id} ref={Faction}>{faction.factionName}</option>) })}
-                </select>
-            </form>
-
+          <label htmlFor="Factions">Choose a Faction:</label>
+          <Dropdown onChange={handleSelectFactions}>
+            <option id="faction" value="0" >Select</option>
+            {Factions.map(faction => { return (<Option value={faction.id}  name={faction.factionName} />) })}
+          </Dropdown>
+        </form>
         <form action="/">
-                <label htmlFor="Servers">Choose a Server:</label>
-                <select id="server" name="server">
-                    {Servers.map(server => { return (<option id="server" value={server.id} ref={Server}>{server.serverName}</option>) })}
-                </select>
-            </form>
+          <label htmlFor="Servers">Choose a Server:</label>
+
+          <Dropdown onChange={handleSelectServers}>
+            <option id="server" value="0" >Select</option>
+            {Servers.map(server => { return (<Option value={server.id}  name={server.serverName} />) })}
+            </Dropdown>
+        </form>
 
         <fieldset>
           <label htmlFor="inputPassword">password: </label>

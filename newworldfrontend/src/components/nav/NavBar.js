@@ -8,22 +8,19 @@ export const NavBar = () => {
     return (
         <ul className="navbar">
             <li className="navbar__item">
-                <Link to="/"></Link>
-            </li>
-            <li className="navbar__item">
-                <Link className="navbar__link" to="/Posts">View All Posts</Link>
+                <Link className="navbar__link"  to="/Posts">View All Posts</Link>
             </li>
             <li className="navbar__item">
                 <Link className="navbar__link" to="/CreatePost">Create New Post</Link>
             </li>
-
+        
             {
                 (localStorage.getItem("newworld_token") !== null) ?
                     <li className="navbar__item">
                         <button className="navbar__link fakeLink"
                             onClick={() => {
                                 localStorage.removeItem("newworld_token")
-                                history.push({ pathname: "/" })
+                                history.push({ pathname: "/Posts" })
                             }}
                         >Logout</button>
                     </li> :
