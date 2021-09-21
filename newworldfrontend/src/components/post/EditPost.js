@@ -6,7 +6,7 @@ import { SettlementContext } from "../Servers,Factions,Settlements/SettlementPro
 import { Dropdown, Option } from "../dropdown/DropDown";
 import Collapsible from 'react-collapsible';
 
-export const EditPost = ({postid, user,item,settlement}) => {
+export const EditPost = ({postid, isMine}) => {
     const [optionValueItem, setOptionValueItem] = useState("");
     const [optionValueSettlement, setOptionValueSettlement] = useState("");
     const { editPost } = useContext(PostContext)
@@ -56,8 +56,8 @@ export const EditPost = ({postid, user,item,settlement}) => {
     };
 
 
-    const UserReturn = (user) => {
-        if (parseInt(localStorage.getItem("user")) === parseInt(user)) {
+    const UserReturn = () => {
+        if (isMine === true) {
             return (
                 <Collapsible trigger="Edit Post">
                 <div className="postForm">
@@ -98,6 +98,6 @@ export const EditPost = ({postid, user,item,settlement}) => {
         }
     }
     return (<>
-        {UserReturn(user)}
+        {UserReturn()}
     </>);
 };

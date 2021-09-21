@@ -12,6 +12,7 @@ export const IndividualPost = () => {
     const [Post, setPost] = useState({});
     useEffect(() => {
         getPostbyId(PostId).then(setPost)
+        console.log('indpost',Post)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -84,8 +85,8 @@ export const IndividualPost = () => {
                 <div className="Post__server">time: {timeConverter(Post.timeStamp)}</div>
             </div>
             {deletepost(Post.id)}
-             <EditPost user={Post.posterId?.id} postid={Post.id} /> 
-             <Messagelist user={Post.posterId?.id} postuser={Post.posterId?.user.id} postid={PostId} /> 
+             <EditPost isMine={Post.isMine} postid={Post.id} /> 
+             <Messagelist isMine={Post.isMine} postuser={Post.posterId?.user.id} postid={PostId} /> 
         </ul>
     </section>
     )

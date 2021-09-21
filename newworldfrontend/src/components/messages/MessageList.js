@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import "../post/Post.css"
 import { MessageContext } from "./MessageProvider"
 // import {CreateMessage} from "./CreateMessage"
-export const Messagelist = ({ postid, postuser,user }) => {
+export const Messagelist = ({ postid, postuser,isMine }) => {
     const { Messages, getMessages, addMessage,deleteMessage } = useContext(MessageContext)
     const history = useHistory();
     const Msg = React.createRef();
@@ -44,8 +44,8 @@ export const Messagelist = ({ postid, postuser,user }) => {
         }
     };
 
-    const UserReturn = (postuser, postid) => {
-        if (parseInt(localStorage.getItem("user")) === parseInt(user)) {
+    const UserReturn = (postuser) => {
+        if (isMine === true) {
             return (
                 <div className="postForm">
                     <div>
@@ -99,26 +99,27 @@ export const Messagelist = ({ postid, postuser,user }) => {
                             ref={Receiver}
                             id={Receiver.message}
                             value={postuser}
+                            readOnly= {true}
                         />
                     </div></div>      <button className="btn btn-primary" onClick={handleClickSaveMessage}>
                     Submit
                 </button></div>)
         }
     }
-    const deletemsg = (id,sender) =>{
-        if (parseInt(localStorage.getItem("user")) === sender) { 
+    const deletemsg = (id,mymsg) =>{
+        if (mymsg === true) { 
         return(<img onClick={()=>deleteMessage(id).then(getMessages(parseInt(postid))) } src="https://img.icons8.com/material-sharp/24/000000/trash.png" alt="loading..."/>)
     }   else{return(<div/>)}
 }
     return (<>
         {Messages.map(Msg => {
-            if (parseInt(localStorage.getItem("user")) === Msg.receiver.id || parseInt(localStorage.getItem("user")) === Msg.sender?.id) {
+            if (Msg.isMine === true) {
                 return (<>
                     <section className="" key={Msg.id}>
-                        <div key={Msg.id}  >#{Msg.sender?.user.id} {Msg.sender?.user.username} : "{Msg.message}" {Msg.timeStamp} {deletemsg(Msg.id,Msg.sender.id)}</div>
+                        <div key={Msg.id}  >#{Msg.sender?.user.id} {Msg.sender?.user.username} : "{Msg.message}" {Msg.timeStamp} {deletemsg(Msg.id,Msg.isMine)}</div>
                     </section>
                 </>)
-            } else { return (<div></div>) }
+            } else { return (<div key={Msg.id}></div>) }
         })
         }
         {UserReturn(postuser, postid)}
