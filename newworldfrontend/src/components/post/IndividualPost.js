@@ -3,7 +3,7 @@ import { PostContext } from "./PostProvider"
 import { useParams, useHistory } from "react-router"
 import { EditPost } from "./EditPost"
 import { Messagelist } from "../messages/MessageList"
-
+// import "./IndividualPost.css"
 
 export const IndividualPost = () => {
     const History = useHistory()
@@ -18,16 +18,12 @@ export const IndividualPost = () => {
 
 
     const timeConverter = (timestamp) => {
-        var a = new Date(timestamp * 1000);
-        var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        var year = a.getFullYear();
-        var month = months[a.getMonth()];
-        var date = a.getDate();
-        var hour = a.getHours();
-        var min = a.getMinutes();
-        var sec = a.getSeconds();
-        var time = date + ' ' + month + ' ' + year + ' ' + hour + ':' + min + ':' + sec;
-        return time;
+        var date = new Date(timestamp * 1000);
+        var hours = date.getHours();
+        var minutes = "0" + date.getMinutes();
+        var seconds = "0" + date.getSeconds();
+        var formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+        return formattedTime;
     }
 
 
@@ -63,26 +59,26 @@ export const IndividualPost = () => {
     };
 
     const deletepost = (id) =>{
-        if (parseInt(localStorage.getItem("user")) === parseInt(Post.posterId?.id)) { 
-        return(<><img onClick={()=>deletePost(id).then(setTimeout(() => { History.push("/Posts") }, 100)) } src="https://img.icons8.com/material-sharp/24/000000/trash.png" alt="loading..."/>
+        if (Post.isMine === true) { 
+        return(<><img onClick={()=>deletePost(id).then(setTimeout(() => { History.push("/Posts") }, 100)) } src="https://img.icons8.com/ios-glyphs/20/ffffff/trash--v1.png" alt="loading..."/>
         <button onClick={()=>deletePost(id).then(setTimeout(() => { History.push("/Posts") }, 100)) }>Sold</button></>)
     }   else{return(<div/>)}
 }
 
     return (
     <section className="Section__Post">
-        <div style={itemRaritybackground}>
+        <div className="item__background" style={itemRaritybackground}>
             <img style={itemImage} className="Item__Image" src={Post.item?.image} alt="Loading..." />
         </div>
         <ul className="Post" id={`Post--${Post.id}`} key={Post.id}>
             <div className="Post__content">
-                <div className="Post__description">poster:{Post.posterId?.user.username} </div>
-                <div className="Post__description">rarity: {Post.item?.rarity} </div>
+            <div className="Post__item"> {Post.item?.itemName} </div>
+                <div className="Post__description">Posted by:{Post.posterId?.user.username} </div>
+                <div className="Post__description">Rarity: {Post.item?.rarity} </div>
                 <div className="Post__description">Description: {Post.description} </div>
-                <div className="Post__item">Item: {Post.item?.itemName} </div>
                 <div className="Post__settlement">Settlement: {Post.settlementId?.settlementName}</div>
                 <div className="Post__server">Server: {Post.posterId?.server.serverName}</div>
-                <div className="Post__server">time: {timeConverter(Post.timeStamp)}</div>
+                <div className="Post__server">Posted at: {timeConverter(Post.timeStamp)}</div>
             </div>
             {deletepost(Post.id)}
              <EditPost isMine={Post.isMine} postid={Post.id} /> 

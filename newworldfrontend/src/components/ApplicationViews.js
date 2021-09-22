@@ -7,9 +7,11 @@ import { CreatePost } from "./post/CreatePost"
 import { SettlementProvider } from "./Servers,Factions,Settlements/SettlementProvider"
 import { IndividualPost } from "./post/IndividualPost"
 import { MessageProvider } from "./messages/MessageProvider"
+import { UserProvider } from "./auth/UserProvider"
 
 export const ApplicationViews = () => {
     return <>
+    <UserProvider>
         <MessageProvider>
             <PostProvider>
                 <SettlementProvider>
@@ -27,5 +29,6 @@ export const ApplicationViews = () => {
                 </SettlementProvider>
             </PostProvider>
         </MessageProvider>
+        </UserProvider>
     </>
 }

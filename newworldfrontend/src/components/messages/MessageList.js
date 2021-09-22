@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import "../post/Post.css"
+import "./Messages.css"
 import { MessageContext } from "./MessageProvider"
-// import {CreateMessage} from "./CreateMessage"
-export const Messagelist = ({ postid, postuser,isMine }) => {
-    const { Messages, getMessages, addMessage,deleteMessage } = useContext(MessageContext)
+import { UserContext } from "../auth/UserProvider"
+
+
+export const Messagelist = ({ postid, postuser, isMine }) => {
+    const { Messages, getMessages, addMessage, deleteMessage } = useContext(MessageContext)
+    const { Users, getUsers } = useContext(UserContext)
     const history = useHistory();
     const Msg = React.createRef();
     const Receiver = React.createRef();
@@ -16,8 +19,9 @@ export const Messagelist = ({ postid, postuser,isMine }) => {
         seen: false
     });
 
-
+    //Changes the state of the message 
     const handleControlledInputChange = () => {
+        console.log(Receiver.current.value)
         const newMessage = { ...Message };
         newMessage.message = Msg.current.value;
         newMessage.receiver = parseInt(Receiver.current.value);
@@ -25,13 +29,14 @@ export const Messagelist = ({ postid, postuser,isMine }) => {
 
         setMessages(newMessage);
     };
-
+    //getting all messages & Users
     useEffect(() => {
-        getMessages(parseInt(postid))
-        console.log("msg", Messages)
+        getMessages(postid)
+        getUsers()
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
+    //Handling the message send button
     const handleClickSaveMessage = (event) => {
         event.preventDefault();
 
@@ -40,11 +45,21 @@ export const Messagelist = ({ postid, postuser,isMine }) => {
             window.alert("Please enter a message");
         } else {
             console.log(Message)
-            addMessage(Message, parseInt(postid)).then(() => history.push(`/Posts/${parseInt(postid)}`));
+            addMessage(Message, parseInt(postid)).then(() => {
+                history.push(`/Posts/${parseInt(postid)}`)
+                setMessages({
+                    post: parseInt(postid),
+                    message: "",
+                    receiver: 0,
+                    timeStamp: 0,
+                    seen: false
+                })
+            }
+            );
         }
     };
-
-    const UserReturn = (postuser) => {
+    //Return a diffrent message form depending on if the user in the poster
+    const UserReturn = (isMine, postuser) => {
         if (isMine === true) {
             return (
                 <div className="postForm">
@@ -58,20 +73,18 @@ export const Messagelist = ({ postid, postuser,isMine }) => {
                                 required
                                 className="textfield"
                                 placeholder="Message"
-                                value={Msg.message}
+                                value={Message.message}
                                 onChange={handleControlledInputChange}
                             />
-                            <label htmlFor="description">Receiver:</label>
-                            <input
-                                ref={Receiver}
-                                type="text"
-                                id="Receiver"
-                                required
-                                className="textfield"
-                                placeholder="Receiver"
-                                value={Receiver.message}
-                                onChange={handleControlledInputChange}
-                            />
+                            <label htmlFor="description">Send To:</label>
+                            <select ref={Receiver} value={Message.receiver} onChange={handleControlledInputChange}>
+                                <option id="item" value="0" >Select User</option>
+                                {Users.map(usr => {
+                                    return (
+                                        <option key={usr.id} value={usr.user?.id}>{usr.user?.username}</option>)}
+                                )}
+                            </select>
+
                         </div>
                     </div>
                     <button className="btn btn-primary" onClick={handleClickSaveMessage}>
@@ -90,40 +103,45 @@ export const Messagelist = ({ postid, postuser,isMine }) => {
                             required
                             className="textfield"
                             placeholder="Message"
-                            value={Msg.message}
+                            value={Message.message}
                             onChange={handleControlledInputChange}
                         />
-                        <label htmlFor="description">Receiver:</label>
-                        <input
-                            className="textfield"
-                            ref={Receiver}
-                            id={Receiver.message}
-                            value={postuser}
-                            readOnly= {true}
-                        />
+                        <label htmlFor="description">Send To:</label>
+                        <select ref={Receiver} value={Message.receiver} onChange={handleControlledInputChange}>
+                            {Users.map(usr => {
+                                if (postuser === usr.user?.id) {
+                                    return (
+                                        <option key={usr.id} value={usr.user?.id}>{usr.user?.username}</option>
+                                    )
+                                }
+                            }
+                            )}
+                        </select>
                     </div></div>      <button className="btn btn-primary" onClick={handleClickSaveMessage}>
                     Submit
                 </button></div>)
         }
     }
-    const deletemsg = (id,mymsg) =>{
-        if (mymsg === true) { 
-        return(<img onClick={()=>deleteMessage(id).then(getMessages(parseInt(postid))) } src="https://img.icons8.com/material-sharp/24/000000/trash.png" alt="loading..."/>)
-    }   else{return(<div/>)}
-}
+    //Deleting messages of the current logged in user
+    const deletemsg = (id, isSender) => {
+        if (isSender === true) {
+            return (<img onClick={() => { deleteMessage(id, postid); }} src="https://img.icons8.com/ios-glyphs/20/ffffff/trash--v1.png" alt="loading..." />)
+        } else { return (<div />) }
+    }
     return (<>
-        {Messages.map(Msg => {
-            if (Msg.isMine === true) {
+        {/* maps through the messages and displays 
+    only messages the correlate to the current user */}
+        {Messages.map(msg => {
+            if (msg.isMineSender === true || msg.isMineReceiver === true) {
                 return (<>
-                    <section className="" key={Msg.id}>
-                        <div key={Msg.id}  >#{Msg.sender?.user.id} {Msg.sender?.user.username} : "{Msg.message}" {Msg.timeStamp} {deletemsg(Msg.id,Msg.isMine)}</div>
+                    <section className="" key={msg.id}>
+                        <div key={msg.id}  >{msg.sender?.user.username}: "{msg.message}" {msg.timeStamp} {deletemsg(msg.id, msg.isMineSender)}</div>
                     </section>
                 </>)
-            } else { return (<div key={Msg.id}></div>) }
+            } else { return (<div key={msg.id}></div>) }
         })
         }
-        {UserReturn(postuser, postid)}
-        {/* <CreateMessage postid={parseInt(postid)}/> */}
+        {UserReturn(isMine, postuser)}
     </>
     )
 }

@@ -31,17 +31,17 @@ export const MessageProvider = (props) => {
             },
             body: JSON.stringify(MessageObj)
         })
-        .then(getMessages(postid))
+        .then(() =>{getMessages(postid)})
     }
 
-    const deleteMessage = postid => {
-        return fetch(`http://localhost:8000/messages/${postid}`, {
+    const deleteMessage = (msgid,postid) => {
+        return fetch(`http://localhost:8000/messages/${msgid}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Token ${localStorage.getItem("newworld_token")}`,
             },
         })
-        .then(getMessages(postid))
+        .then(() =>{getMessages(postid)})
     }
 
     return (

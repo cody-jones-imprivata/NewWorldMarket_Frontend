@@ -5,6 +5,26 @@
     margin-bottom: 1rem;
 }
 
+a{
+    font-size: 1.1rem;
+    margin-left: 3rem;
+     color:rgb(167, 167, 167);
+     text-decoration: none;
+}
+a:hover{
+    font-size: 1.1rem;
+    margin-left: 3rem;
+     color:rgb(167, 167, 167);
+     text-decoration: underline;
+}
+button{
+    background-color:rgb(255, 255, 255);
+    text-decoration: none;
+}
+th{
+    color:rgb(167, 167, 167);
+    text-decoration: none;
+}
 .form-group{
     display: flex;
     flex-flow: column;
