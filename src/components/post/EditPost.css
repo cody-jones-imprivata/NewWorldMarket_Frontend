@@ -1,0 +1,12 @@
+.Collapsible__trigger{
+    font-size: 1.8rem;
+}
+
+.Collapsible__trigger, .is-open{
+    color: rgb(65, 199, 110);
+}
+
+.Collapsible{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
