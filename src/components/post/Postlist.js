@@ -14,7 +14,6 @@ export const PostList = () => {
 
     return (<>
         <section className="Section__Post">
-
                 {
                     Posts.map(Post => {
                         let Itemrarity;
