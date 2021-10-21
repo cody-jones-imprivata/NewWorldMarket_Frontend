@@ -1,0 +1,39 @@
+.textfield{
+    max-width: 50%;
+    height: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    width: 19rem;
+}
+
+.form-group{
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+}
+
+select{
+    max-width: 50%;
+    height: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    width: 19rem;
+}
+
+option{
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    width: 19rem;
+}
+
+.msg-box{
+    width: 16rem;
+    background-color: white;
+    color: black;
+}
+
+.trash-img{
+    height: 1.4rem;
+    position: absolute;
+}
