@@ -8,7 +8,7 @@ export const SettlementProvider = (props) => {
     const [Settlements, setSettlement] = useState([])
 
     const getSettlements = () => {
-        return fetch("http://localhost:8000/settlements",{
+        return fetch("https://newworldmarket-backend.herokuapp.com/settlements",{
             headers:{
                Authorization: `Token ${localStorage.getItem("newworld_token")}`
             }

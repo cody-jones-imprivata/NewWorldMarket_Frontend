@@ -8,7 +8,7 @@ export const FactionProvider = (props) => {
     const [Factions, setFactions] = useState([])
 
     const getFactions = () => {
-        return fetch("http://localhost:8000/factions",{
+        return fetch("https://newworldmarket-backend.herokuapp.com/factions",{
             headers:{
                Authorization: `Token 0f612061fb08c2a36eb700afba263b08ded91e51`
             }

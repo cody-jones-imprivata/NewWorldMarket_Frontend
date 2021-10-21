@@ -8,7 +8,7 @@ export const UserProvider = (props) => {
     const [Users, setUsers] = useState([])
 
     const getUsers = () => {
-        return fetch(`http://localhost:8000/gameusers`,{
+        return fetch(`https://newworldmarket-backend.herokuapp.com/gameusers`,{
             headers : { 
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

@@ -8,7 +8,7 @@ export const ItemProvider = (props) => {
     const [Items, setItems, setItem] = useState([])
 
     const getItems = () => {
-        return fetch("http://localhost:8000/items",{
+        return fetch("https://newworldmarket-backend.herokuapp.com/items",{
             headers:{
                 Authorization: `Token ${localStorage.getItem("newworld_token")}`
             }
@@ -18,7 +18,7 @@ export const ItemProvider = (props) => {
     }
 
     const getSingleItem = name => {
-        return fetch(`http://localhost:8000/items?itemName=${name}`, {
+        return fetch(`https://newworldmarket-backend.herokuapp.com/items?itemName=${name}`, {
             headers: {
                 Authorization: `Token ${localStorage.getItem("newworld_token")}`,
             },
