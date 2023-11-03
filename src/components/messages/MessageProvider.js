@@ -8,7 +8,7 @@ export const MessageProvider = (props) => {
     const [Messages, setMessages] = useState([])
 
     const getMessages = (postid) => {
-        return fetch(`https://newworldmarket-backend.herokuapp.com/messages?post=${postid}`,{
+        return fetch(`http://localhost:8000/messages?post=${postid}`,{
             headers : { 
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -22,7 +22,7 @@ export const MessageProvider = (props) => {
     }
 
     const addMessage = (MessageObj,postid) => {
-        return fetch("https://newworldmarket-backend.herokuapp.com/messages", {
+        return fetch("http://localhost:8000/messages", {
             method: "POST",
             headers: {
                 Authorization: `Token ${localStorage.getItem("newworld_token")}`,
@@ -35,7 +35,7 @@ export const MessageProvider = (props) => {
     }
 
     const deleteMessage = (msgid,postid) => {
-        return fetch(`https://newworldmarket-backend.herokuapp.com/messages/${msgid}`, {
+        return fetch(`http://localhost:8000/messages/${msgid}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Token ${localStorage.getItem("newworld_token")}`,

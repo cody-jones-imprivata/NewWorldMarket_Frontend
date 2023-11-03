@@ -9,15 +9,9 @@ export const PostProvider = (props) => {
     const [ setPost] = useState({});
     const [PostsSold,setSoldPosts] = useState([])
     const getPosts = () => {
-<<<<<<< HEAD:src/components/post/PostProvider.js
         return fetch("http://localhost:8000/posts?sold=False",{
             headers:{
-                Authorization: `Token 0f612061fb08c2a36eb700afba263b08ded91e51`,
-=======
-        return fetch("https://newworldmarket-backend.herokuapp.com/posts?sold=False",{
-            headers:{
-                Authorization: `Token 368cd43fa8431c93af79a1c54dae0cac5e34ea36`,
->>>>>>> 57504da2618328ddf21fdcd0ca4f9046f89a6f05:src/components/post/PostProvider.js
+                Authorization: `Token 1`,
             }
         })
         .then(res => res.json())
@@ -25,15 +19,9 @@ export const PostProvider = (props) => {
     }
 
     const getSoldPosts = () => {
-<<<<<<< HEAD:src/components/post/PostProvider.js
         return fetch("http://localhost:8000/posts?sold=True",{
             headers:{
-                Authorization: `Token 0f612061fb08c2a36eb700afba263b08ded91e51`,
-=======
-        return fetch("https://newworldmarket-backend.herokuapp.com/posts?sold=True",{
-            headers:{
-                Authorization: `Token 368cd43fa8431c93af79a1c54dae0cac5e34ea36`,
->>>>>>> 57504da2618328ddf21fdcd0ca4f9046f89a6f05:src/components/post/PostProvider.js
+                Authorization: `Token 1`,
             }
         })
         .then(res => res.json())
@@ -41,7 +29,7 @@ export const PostProvider = (props) => {
     }
 
     const getPostbyId = PostId => {
-        return fetch(`https://newworldmarket-backend.herokuapp.com/posts/${PostId}`,{
+        return fetch(`http://localhost:8000/posts/${PostId}`,{
             headers:{
                 Authorization: `Token ${localStorage.getItem("newworld_token")}`,
             }
@@ -51,7 +39,7 @@ export const PostProvider = (props) => {
     }
 
     const addPost = PostObj => {
-        return fetch("https://newworldmarket-backend.herokuapp.com/posts", {
+        return fetch("http://localhost:8000/posts", {
             method: "POST",
             headers: {
                 Authorization: `Token ${localStorage.getItem("newworld_token")}`,
@@ -63,7 +51,7 @@ export const PostProvider = (props) => {
     }
 
     const editPost =(PostObj,postid) => {
-        return fetch(`https://newworldmarket-backend.herokuapp.com/posts/${postid}`, {
+        return fetch(`http://localhost:8000/posts/${postid}`, {
             method: "PUT",
             headers: {
                 Authorization: `Token ${localStorage.getItem("newworld_token")}`,
@@ -75,7 +63,7 @@ export const PostProvider = (props) => {
     }
 
     const deletePost = postid => {
-        return fetch(`https://newworldmarket-backend.herokuapp.com/posts/${postid}`, {
+        return fetch(`http://localhost:8000/posts/${postid}`, {
             method: "DELETE",
             headers: {
                 Authorization: `Token ${localStorage.getItem("newworld_token")}`,

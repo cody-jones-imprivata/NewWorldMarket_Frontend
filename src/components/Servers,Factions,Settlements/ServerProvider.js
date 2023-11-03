@@ -8,9 +8,9 @@ export const ServerProvider = (props) => {
     const [Servers, setServers] = useState([])
 
     const getServers = () => {
-        return fetch("https://newworldmarket-backend.herokuapp.com/servers",{
+        return fetch("http://localhost:8000/servers",{
             headers:{
-               Authorization: `Token 0f612061fb08c2a36eb700afba263b08ded91e51`
+               Authorization: `Token 1`
             }
         })
         .then(res => res.json())

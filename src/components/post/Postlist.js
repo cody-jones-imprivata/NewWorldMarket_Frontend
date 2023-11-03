@@ -19,19 +19,19 @@ export const PostList = () => {
                         let Itemrarity;
                         switch (Post.item?.rarity) {
                             case "rare":
-                                Itemrarity = "https://newworldfans.com/packs/media/db_images/backgrounds/rare-327ddaed1306ba9899fb560440bce57f.png";
+                                Itemrarity = "https://cdn.nwdb.info/static/images/tooltip_header_bg_2.jpg";
                                 break;
                             case "epic":
-                                Itemrarity = "https://newworldfans.com/packs/media/db_images/backgrounds/epic-6b4f59e4c20cf8f1d50a743b21db23bb.png";
+                                Itemrarity = "https://cdn.nwdb.info/static/images/tooltip_header_bg_3.jpg";
                                 break;
                             case "common":
-                                Itemrarity = "https://newworldfans.com/packs/media/db_images/backgrounds/common-6a449e0e4259ec225fd34e2ee2d7ce16.png";
+                                Itemrarity = "https://cdn.nwdb.info/static/images/tooltip_header_bg_5.jpg";
                                 break;
                             case "uncommon":
-                                Itemrarity = "https://newworldfans.com/packs/media/db_images/backgrounds/uncommon-d0273c085c8d5bbde02bdf7932422275.png";
+                                Itemrarity = "https://cdn.nwdb.info/static/images/tooltip_header_bg_1.jpg";
                                 break;
                             case "legendary":
-                                Itemrarity = "https://newworldfans.com/packs/media/db_images/backgrounds/legendary-68889726f115945dceeea08d37c85672.png";
+                                Itemrarity = "https://cdn.nwdb.info/static/images/tooltip_header_bg_4.jpg";
                                 break;
                             default:
                                 Itemrarity = "";
